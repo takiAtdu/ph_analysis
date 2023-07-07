@@ -59,9 +59,9 @@ print("PH解析中です。")
 # import homcloud.interface as hc
 
 # 2値化
-pict_tic = pict < arg_r_min_picked[0]
-pict_t2_mo2c = (arg_r_min_picked[0] < pict) & (pict < arg_r_min_picked[1])
-pict_moss = arg_r_min_picked[1] < pict
+pict_tic = pict > arg_r_min_picked[0]
+pict_t2_mo2c = (arg_r_min_picked[0] > pict) | (pict > arg_r_min_picked[1])
+pict_moss = arg_r_min_picked[1] > pict
 
 # PH解析
 hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_tic, signed=True), save_to=output_path+"-pd_tic.pdgm")
@@ -69,9 +69,10 @@ hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_t2_mo2c, signed=True),
 hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_moss, signed=True), save_to=output_path+"-pd_moss.pdgm")
 
 # 0次のPH図を取得
-pd_tic = hc.PDList(output_path+"-pd_tic.pdgm").dth_diagram(0)
-pd_t2_mo2c = hc.PDList(output_path+"-pd_t2_mo2c.pdgm").dth_diagram(0)
-pd_moss = hc.PDList(output_path+"-pd_moss.pdgm").dth_diagram(0)
+dimension = 1
+pd_tic = hc.PDList(output_path+"-pd_tic.pdgm").dth_diagram(dimension)
+pd_t2_mo2c = hc.PDList(output_path+"-pd_t2_mo2c.pdgm").dth_diagram(dimension)
+pd_moss = hc.PDList(output_path+"-pd_moss.pdgm").dth_diagram(dimension)
 
 # 0次のPH図を表示
 pd_tic.histogram().plot(colorbar={"type": "log"})
@@ -80,7 +81,7 @@ pd_t2_mo2c.histogram().plot(colorbar={"type": "log"})
 plt.savefig(output_path+"-pdimage_t2_mo2c.png")
 pd_moss.histogram().plot(colorbar={"type": "log"})
 plt.savefig(output_path+"-pdimage_moss.png")
-print("PH図を保存しました。")
+print(str(dimension)+"次のPH図を保存しました。")
 
 
 # 逆解析
@@ -91,9 +92,9 @@ hc.BitmapPHTrees.for_bitmap_levelset(hc.distance_transform(pict_t2_mo2c, signed=
 hc.BitmapPHTrees.for_bitmap_levelset(hc.distance_transform(pict_moss, signed=True), save_to=output_path+"-tree_moss.pdgm")
 
 # bitmap_phtrees(0)で0次のPHの情報を取得
-phtrees_tic = hc.PDList(output_path+"-tree_tic.pdgm").bitmap_phtrees(0)
-phtrees_t2_mo2c = hc.PDList(output_path+"-tree_t2_mo2c.pdgm").bitmap_phtrees(0)
-phtrees_moss = hc.PDList(output_path+"-tree_moss.pdgm").bitmap_phtrees(0)
+phtrees_tic = hc.PDList(output_path+"-tree_tic.pdgm").bitmap_phtrees(dimension)
+phtrees_t2_mo2c = hc.PDList(output_path+"-tree_t2_mo2c.pdgm").bitmap_phtrees(dimension)
+phtrees_moss = hc.PDList(output_path+"-tree_moss.pdgm").bitmap_phtrees(dimension)
 
 # 対角線から離れた点のみを取得
 # deathが-∞のノードに対応する領域は画像全体となるので、このノードは除外
