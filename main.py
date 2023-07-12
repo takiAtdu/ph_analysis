@@ -6,10 +6,11 @@ import imageio
 import os
 from scipy.signal import argrelmin, argrelmax
 import homcloud.interface as hc
+from skimage.filters import threshold_multiotsu
 
 # 画像の読み込み
 print("画像を読み込み中です。")
-input_image = "3d_0deg_200x.png"
+input_image = "r1_500x_2_cut.png"
 input_image_path = "data/" + input_image
 image_path = os.path.splitext(input_image)[0]
 output_path = "output/" + image_path
@@ -27,13 +28,19 @@ histo, bins = np.histogram(pict.ravel(), range=(0,256), bins=256)
 x=bins[1:]
 y=histo
 
-# 極値の取得
-# orderを変えることで調整可能
-order = 10
-arg_r_min,arg_r_max=argrelmin(y, order=order),argrelmax(y, order=order)
+# # 極値の取得
+# # orderを変えることで調整可能
+# order = 14
+# arg_r_min,arg_r_max=argrelmin(y, order=order),argrelmax(y, order=order)
 
-# 極小値のリストから、適切な値のみ抽出
-arg_r_min_picked = [i for i in arg_r_min[0] if (20 < i) & (i < 180)]
+# # 極小値のリストから、適切な値のみ抽出
+# arg_r_min_picked = [i for i in arg_r_min[0] if (20 < i) & (i < 180)]
+
+# # 極値を自分で設定する場合
+# #arg_r_min_picked = [50, 140]
+
+# 大津の方法
+arg_r_min_picked = threshold_multiotsu(pict)
 
 
 # 抽出した極小値を表示
@@ -60,8 +67,17 @@ print("PH解析中です。")
 
 # 2値化
 pict_tic = pict > arg_r_min_picked[0]
-pict_t2_mo2c = (arg_r_min_picked[0] > pict) | (pict > arg_r_min_picked[1])
+pict_t2_mo2c = (arg_r_min_picked[0] >= pict) | (pict >= arg_r_min_picked[1])
 pict_moss = arg_r_min_picked[1] > pict
+
+plt.imshow(pict_tic, "gray")
+plt.savefig(output_path+"-binary_tic.png")
+
+plt.imshow(pict_t2_mo2c, "gray")
+plt.savefig(output_path+"-binary_t2_mo2c.png")
+
+plt.imshow(pict_moss, "gray")
+plt.savefig(output_path+"-binary_moss.png")
 
 # PH解析
 hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_tic, signed=True), save_to=output_path+"-pd_tic.pdgm")
@@ -98,9 +114,9 @@ phtrees_moss = hc.PDList(output_path+"-tree_moss.pdgm").bitmap_phtrees(dimension
 
 # 対角線から離れた点のみを取得
 # deathが-∞のノードに対応する領域は画像全体となるので、このノードは除外
-nodes_tic = [node for node in phtrees_tic.nodes if node.lifetime() > 1 and node.death_time() != np.inf]
-nodes_t2_mo2c = [node for node in phtrees_t2_mo2c.nodes if node.lifetime() > 1 and node.death_time() != np.inf]
-nodes_moss = [node for node in phtrees_moss.nodes if node.lifetime() > 1 and node.death_time() != np.inf]
+nodes_tic = [node for node in phtrees_tic.nodes if node.lifetime() > 5 and node.death_time() != np.inf]
+nodes_t2_mo2c = [node for node in phtrees_t2_mo2c.nodes if node.lifetime() > 5 and node.death_time() != np.inf]
+nodes_moss = [node for node in phtrees_moss.nodes if node.lifetime() > 5 and node.death_time() != np.inf]
 
 print("逆解析結果を出力中です。")
 # draw_volumes_on_2d_image関数で可視化
