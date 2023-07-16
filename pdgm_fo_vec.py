@@ -13,10 +13,12 @@ filenames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_anal
 
 pd_result_path = "output_for_vec/ph_results/"
 os.makedirs(pd_result_path, exist_ok=True)
+i = 0
 for png_path in filenames:
+    i += 1
+    print("===No."+str(i)+"===")
     # 画像の読み込み
     print("画像を読み込み中です。")
-    #input_image = "r1_1000x_1.png"
     input_image = os.path.basename(png_path)
     input_image_path = "data_for_vec/" + input_image
     image_path = os.path.splitext(input_image)[0]
@@ -41,10 +43,11 @@ for png_path in filenames:
     print("PH解析中です。")
 
     # 2値化
-    # pict_tic = pict > arg_r_min_picked[0]
-    # pict_t2 = (arg_r_min_picked[0] >= pict) | (pict >= arg_r_min_picked[1])
+    pict_tic = pict > arg_r_min_picked[0]
+    pict_t2 = (arg_r_min_picked[0] >= pict) | (pict >= arg_r_min_picked[1])
     pict_moss = arg_r_min_picked[1] > pict
 
     # PH解析
-    # hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_tic, signed=True), save_to=pd_result_path+image_path+"-pd_tic.pdgm")
+    hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_tic, signed=True), save_to=pd_result_path+image_path+"-pd_tic.pdgm")
+    hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_t2, signed=True), save_to=pd_result_path+image_path+"-pd_t2.pdgm")
     hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_moss, signed=True), save_to=pd_result_path+image_path+"-pd_moss.pdgm")
