@@ -1,5 +1,3 @@
-# https://helve-blog.com/posts/python/sklearn-lasso-regression/
-
 import matplotlib.pyplot as plt
 import pickle
 import numpy as np
@@ -51,7 +49,7 @@ print("描画開始")
 
 # Xmin, Xmax, Ymin, Ymax
 extent = (-40, 40, -40, 40)
-plt.imshow(ZZ, cmap="Greys", extent=extent)
+plt.imshow(ZZ, cmap="Reds", extent=extent)
 
 # 斜線
 plt.plot([-40, 40],[-40, 40],color='black',linewidth=1)

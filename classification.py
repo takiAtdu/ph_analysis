@@ -22,9 +22,17 @@ labels = np.array(
 
 phase = "moss"
 dimension = 1
-range = (-40, 40)
+pd_range = (-40, 40)
 sigma = 1
-weight = ("atan", 0.01, 10)
+weight = ("atan", 0.01, 2)
+
+diagonal = []
+for i in range(64):
+    if i == 0:
+        diagonal.append(i)
+    else:
+        x = diagonal[i-1] + i + 1
+        diagonal.append(x)
 
 
 pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/for_vec/pdgm_"+phase+"/*.pdgm")
@@ -37,8 +45,15 @@ for pdname in pdnames:
 pds = [hc.PDList(pdname).dth_diagram(dimension) for pdname in pdnames]
 
 # ベクトル化
-spec = hc.PIVectorizeSpec(range, 64, sigma = sigma, weight = weight)
+spec = hc.PIVectorizeSpec(pd_range, 64, sigma = sigma, weight = weight)
 pdvects = np.vstack([spec.vectorize(pd) for pd in pds])
+
+# # 対角成分を削る
+# for pdvect in pdvects:
+#     for i in diagonal:
+#         pdvect[i] = 0
+#         pdvect[i-1] = 0
+
 
 # 正規化
 print('pdvects (min, max) : (', pdvects.min(), ', ', pdvects.max(), ')')
@@ -94,9 +109,8 @@ ax.scatter(x[labels == 4], y[labels == 4], z[labels == 4], s = 20, c = "y")
 ax.scatter(x[labels == 5], y[labels == 5], z[labels == 5], s = 20, c = "g")
 ax.scatter(x[labels == 6], y[labels == 6], z[labels == 6], s = 20, c = "c")
 
-# ax.legend(['As Cast', '1600d1d', '1600d3d', '1600d3h', '1700d3h', '1800d3h'])
-
-plt.show()
+ax.legend(['As Cast', '1600d1d', '1600d3d', '1600d3h', '1700d3h', '1800d3h'])
 
 # 出力
-plt.savefig("classification_" + phase + "_" + dimension + "_" + range[0] + "_" + range[1] + "_" + sigma + "_" + weight[0] + "_" + weight[1] + "_" + weight[2] + ".png")
+# plt.show()
+plt.savefig("classification_" + phase + str(dimension) + ".png")
