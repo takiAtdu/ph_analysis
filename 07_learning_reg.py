@@ -1,44 +1,3 @@
-import matplotlib.pyplot as plt
-import pickle
-import numpy as np
-import homcloud.interface as hc
-
-import common
-
-phase = input("phase(moss, t2, tic) : ")
-dimension = int(input("dimension(0, 1) : "))
-sigma = common.sigma
-weight = common.weight
-bins = common.bins
-pd_range = common.pd_range
-diagonal = common.diagonal
-
-
-X = []
-Y = []
-for i in range(64):
-    x    = pd_range[0]+(pd_range[1]-pd_range[0])/bins*i
-    y = x
-    x_dx = pd_range[0]+(pd_range[1]-pd_range[0])/bins*(i+1)
-    y_dy = x_dx
-
-    X.append((x+x_dx)/2)
-    Y.append((y+y_dy)/2)
-
-
-print("係数取得開始")
-
-model = 'model_reg_' + phase + str(dimension) + '.sav'
-lss = pickle.load(open(model, 'rb'))
-coef = lss.coef_
-
-index = []
-for i in range(len(coef)):
-  if coef[i] != 0:
-    index.append(i)
-print(len(index))
-
-
 # https://helve-blog.com/posts/python/sklearn-lasso-regression/
 
 import numpy as np
@@ -58,6 +17,8 @@ hv = common.get_hv()
 
 y = [hv[0]]*100 + [hv[1]]*100 + [hv[2]]*100 + [hv[3]]*100 + [hv[4]]*100 + [hv[5]]*100
 
+phase = input("phase(moss, t2, tic) : ")
+dimension = int(input("dimension(0, 1) : "))
 sigma = common.sigma
 weight = common.weight
 bins = common.bins
@@ -84,24 +45,19 @@ for pdvect in pdvects:
         pdvect[i] = 0
         pdvect[i-1] = 0
 
-# 係数が0の部分を削る
-X = np.zeros((len(pdvects), len(index)))
-for i in range(len(pdvects)):
-  pdvect = pdvects[i]
-  count = 0
-  for j in range(len(pdvect)):
-    if j in index:
-      X[i][count] = pdvect[j]
-      count += 1
+pca = PCA(n_components=10)
+pca.fit(pdvects)
 
+reduced = pca.transform(pdvects)
+
+X = pdvects
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 
 lss = Lasso(alpha=0.1)
 lss.fit(X_train, y_train)
 
-
-filename = '2nd_model_reg_' + phase + str(dimension) + '.sav'
+filename = 'model_reg_' + phase + str(dimension) + '.sav'
 pickle.dump(lss, open(filename, 'wb'))
 
 y_pred = lss.predict(X_test)
@@ -163,4 +119,5 @@ plt.scatter(avg_1800c3h,  hv[4], s = 20, c = "r")
 plt.scatter(avg_ascast,   hv[5], s = 20, c = "r")
 plt.xlabel("predict")
 plt.ylabel("true")
-plt.savefig("2nd_learning_reg_" + str(phase) + str(dimension) + ".png")
+plt.savefig("learning_reg_" + str(phase) + str(dimension) + ".png")
+# plt.show()

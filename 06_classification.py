@@ -5,37 +5,19 @@ import glob
 from sklearn.decomposition import PCA
 from mpl_toolkits.mplot3d import Axes3D
 
+import common
 
-labels = np.array(
-        [
-        4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 
-        4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 
+labels = np.array([1]*100 + [2]*100 + [3]*100 + [4]*100 + [5]*100 + [6]*100)
 
-        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+phase = input("phase(moss, t2, tic) : ")
+dimension = int(input("dimension(0, 1) : "))
+sigma = common.sigma
+weight = common.weight
+bins = common.bins
+pd_range = common.pd_range
+diagonal = common.diagonal
 
-        6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 
-        6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 
-        ]
-        )
-
-
-phase = "moss"
-dimension = 1
-pd_range = (-40, 40)
-sigma = 1
-weight = ("atan", 0.01, 2)
-
-diagonal = []
-for i in range(64):
-    if i == 0:
-        diagonal.append(i)
-    else:
-        x = diagonal[i-1] + i + 1
-        diagonal.append(x)
-
-
-pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/for_vec/pdgm_"+phase+"/*.pdgm")
+pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/output/pdgm_"+phase+"/*.pdgm")
 pdnames.sort()
 
 for pdname in pdnames:
@@ -48,11 +30,11 @@ pds = [hc.PDList(pdname).dth_diagram(dimension) for pdname in pdnames]
 spec = hc.PIVectorizeSpec(pd_range, 64, sigma = sigma, weight = weight)
 pdvects = np.vstack([spec.vectorize(pd) for pd in pds])
 
-# # 対角成分を削る
-# for pdvect in pdvects:
-#     for i in diagonal:
-#         pdvect[i] = 0
-#         pdvect[i-1] = 0
+# 対角成分を削る
+for pdvect in pdvects:
+    for i in diagonal:
+        pdvect[i] = 0
+        pdvect[i-1] = 0
 
 
 # 正規化
@@ -102,15 +84,18 @@ ax.set_yticks([-1.0, -0.5, 0, 0.5, 1.0])
 ax.set_zticks([-1.0, -0.5, 0, 0.5, 1.0])
 
 
-ax.scatter(x[labels == 1], y[labels == 1], z[labels == 1], s = 20, c = "k")
-ax.scatter(x[labels == 2], y[labels == 2], z[labels == 2], s = 20, c = "r")
-ax.scatter(x[labels == 3], y[labels == 3], z[labels == 3], s = 20, c = "b")
-ax.scatter(x[labels == 4], y[labels == 4], z[labels == 4], s = 20, c = "y")
-ax.scatter(x[labels == 5], y[labels == 5], z[labels == 5], s = 20, c = "g")
-ax.scatter(x[labels == 6], y[labels == 6], z[labels == 6], s = 20, c = "c")
+ax.scatter(x[labels == 1], y[labels == 1], z[labels == 1], s = 20, c = "r")
+ax.scatter(x[labels == 2], y[labels == 2], z[labels == 2], s = 20, c = "b")
+ax.scatter(x[labels == 3], y[labels == 3], z[labels == 3], s = 20, c = "y")
+ax.scatter(x[labels == 4], y[labels == 4], z[labels == 4], s = 20, c = "g")
+ax.scatter(x[labels == 5], y[labels == 5], z[labels == 5], s = 20, c = "c")
+ax.scatter(x[labels == 6], y[labels == 6], z[labels == 6], s = 20, c = "k")
 
-ax.legend(['As Cast', '1600d1d', '1600d3d', '1600d3h', '1700d3h', '1800d3h'])
+# ax.legend(["1600c24h", "1600c3h", "1700c3h", "1800c24h", "1800c3h", "As Cast"])
 
 # 出力
-# plt.show()
-plt.savefig("classification_" + phase + str(dimension) + ".png")
+save_flag = input("保存するか表示するか(保存: 1, 表示: 0)")
+if save_flag == "1":
+    plt.savefig("classification_" + phase + str(dimension) + ".png")
+else:
+    plt.show()

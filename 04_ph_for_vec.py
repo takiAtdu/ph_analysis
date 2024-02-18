@@ -7,8 +7,10 @@ from skimage.filters import threshold_multiotsu
 import glob
 import numpy as np
 
+import common
 
-filenames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/data/1800_3h_500x" + "/*.png")
+condition = input("熱処理条件_倍率(data内から選択) : ")
+filenames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/data/" + condition + "/*.png")
 filenames.sort()
 
 
@@ -19,26 +21,23 @@ for png_path in filenames:
     print(png_path)
 
     # mode="L" とするとグレースケールで読み込まれる
-    pict = imageio.v3.imread(png_path, mode="L")
+    pict = common.read_image(png_path)
 
 
     # 閾値の設定
     print("閾値を設定中です。")
-    # 大津の方法
-    arg_r_min_picked = threshold_multiotsu(pict)
+    thresholds = common.get_thresholds(pict)
 
 
     # PH解析
     print("PH解析中です。")
 
     # 2値化
-    pict_tic = pict > arg_r_min_picked[0]
-    pict_t2 = (arg_r_min_picked[0] >= pict) | (pict >= arg_r_min_picked[1])
-    pict_moss = arg_r_min_picked[1] > pict
+    pict_tic, pict_t2, pict_moss = common.binarize(pict, thresholds)
 
-    tic_count = np.count_nonzero(pict < arg_r_min_picked[0])
-    t2_count = np.count_nonzero((arg_r_min_picked[0] <= pict) & (pict <= arg_r_min_picked[1]))
-    moss_count = np.count_nonzero(arg_r_min_picked[1] < pict)
+    tic_count = np.count_nonzero(pict < thresholds[0])
+    t2_count = np.count_nonzero((thresholds[0] <= pict) & (pict <= thresholds[1]))
+    moss_count = np.count_nonzero(thresholds[1] < pict)
 
     sum = tic_count + t2_count + moss_count
 

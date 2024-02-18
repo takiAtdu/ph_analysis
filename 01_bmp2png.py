@@ -3,7 +3,8 @@ from PIL import Image
 import glob
 import cv2
 
-basedir = "/Users/takigawaatsushi/Documents/研究室/研究/data/EPMA/240119/ascast_500x"
+# /Users/takigawaatsushi/Documents/研究室/研究/data/EPMA/240205/1800c24h
+basedir = input("パスを指定(ex. /Users/takigawaatsushi/Documents/研究室/研究/data/EPMA/240205/1800c24h) : ")
 filepaths = glob.glob(basedir + "/*.bmp")
 filepaths.sort()
 savedir = basedir + "/png/"
