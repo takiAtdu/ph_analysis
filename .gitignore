@@ -1,11 +1,8 @@
 data
 for_vec
-for_reverse
+reverse
 output
 venv
-.python-version
-model_reg.sav
-model_reg_moss1.sav
 .TDA講習会（吉見研究室用）.pdf.icloud
 vect2PD.py
 Volume2D.py

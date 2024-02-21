@@ -1,5 +1,6 @@
 # https://helve-blog.com/posts/python/sklearn-lasso-regression/
 
+import os
 import numpy as np
 from sklearn.linear_model import Lasso
 from sklearn.model_selection import train_test_split
@@ -57,8 +58,10 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 lss = Lasso(alpha=0.1)
 lss.fit(X_train, y_train)
 
-filename = 'model_reg_' + phase + str(dimension) + '.sav'
-pickle.dump(lss, open(filename, 'wb'))
+save_dir = "output/lasso/"
+os.makedirs(save_dir, exist_ok=True)
+filename = phase + str(dimension) + ".sav"
+pickle.dump(lss, open(save_dir+filename, 'wb'))
 
 y_pred = lss.predict(X_test)
 
@@ -120,6 +123,5 @@ plt.scatter(avg_ascast,   hv[5], s = 20, c = "r")
 plt.xlabel("predicted")
 plt.ylabel("measured")
 
-save_dir = "output/learning_reg/"
 plt.savefig(save_dir + str(phase) + str(dimension) + ".png")
 # plt.show()

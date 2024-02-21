@@ -29,7 +29,7 @@ for i in range(bins):
 
 print("係数取得開始")
 
-model = 'model_reg_' + phase + str(dimension) + '.sav'
+model = "output/lasso/" + phase + str(dimension) + '.sav'
 lss = pickle.load(open(model, 'rb'))
 
 print("係数取得終了")
@@ -113,12 +113,12 @@ plt.imshow(ZZ, cmap="Reds", extent=extent)
 plt.plot([-40, 40],[-40, 40],color='black',linewidth=1)
 # 縦線
 for i in range(7):
-  params = -30 + 10*i
-  plt.plot([params, params],[-40, 40],color='gray',linewidth=0.5)
+    params = -30 + 10*i
+    plt.plot([params, params],[-40, 40],color='gray',linewidth=0.5)
 # 横線
 for i in range(7):
-  params = -30 + 10*i
-  plt.plot([-40, 40],[params, params],color='gray',linewidth=0.5)
+    params = -30 + 10*i
+    plt.plot([-40, 40],[params, params],color='gray',linewidth=0.5)
 
 
 plt.colorbar()

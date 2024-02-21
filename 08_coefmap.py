@@ -1,3 +1,4 @@
+import os
 import matplotlib.pyplot as plt
 import pickle
 import numpy as np
@@ -28,7 +29,7 @@ for i in range(bins):
 
 print("係数取得開始")
 
-model = '2nd_model_reg_' + phase + str(dimension) + '.sav'
+model = "output/lasso/"+ phase + str(dimension) + ".sav"
 lss = pickle.load(open(model, 'rb'))
 coef = lss.coef_
 
@@ -60,4 +61,6 @@ print("描画開始")
 spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = "none")
 spec.histogram_from_vector(coef).plot(colorbar={"type": "linear-midpoint", "midpoint": 0})
 
-plt.savefig("test2.png")
+save_dir = "output/coef_cmap/"
+os.makedirs(save_dir, exist_ok=True)
+plt.savefig(save_dir + phase + str(dimension) + ".png")
