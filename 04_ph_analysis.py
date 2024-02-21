@@ -10,7 +10,7 @@ import numpy as np
 import common
 
 condition = input("熱処理条件_倍率(data内から選択) : ")
-filenames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/data/" + condition + "/*.png")
+filenames = glob.glob("data/" + condition + "/*.png")
 filenames.sort()
 
 

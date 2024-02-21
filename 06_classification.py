@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import homcloud.interface as hc
@@ -129,6 +130,11 @@ if legend_flag == "1":
 # 出力
 save_flag = input("保存するか表示するか(保存: 1, 表示: 0) : ")
 if save_flag == "1":
-    plt.savefig("classification_"+pc_dim+"D_" + phase + str(dimension) + ".png")
+    save_dir = "output/classification/"
+    os.makedirs(save_dir, exist_ok=True)
+    if pc_dim == "3":
+        plt.savefig(save_dir + pc_dim+"D_" + phase + str(dimension) + ".png")
+    elif pc_dim == "2":
+        plt.savefig(save_dir + pc_dim+"D_" + phase + str(dimension) + "PC"+xlabel + "_" + "PC"+ylabel + ".png")
 else:
     plt.show()

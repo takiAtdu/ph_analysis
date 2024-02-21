@@ -60,4 +60,5 @@ print("描画開始")
 spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = "none")
 spec.histogram_from_vector(coef).plot(colorbar={"type": "linear-midpoint", "midpoint": 0})
 
-plt.savefig("coef_cmap_" + phase + str(dimension) + ".png")
+save_dir = "output/coef_cmap/"
+plt.savefig(save_dir + phase + str(dimension) + ".png")

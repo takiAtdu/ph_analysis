@@ -117,7 +117,9 @@ plt.scatter(avg_1700c3h,  hv[2], s = 20, c = "r")
 plt.scatter(avg_1800c24h, hv[3], s = 20, c = "r")
 plt.scatter(avg_1800c3h,  hv[4], s = 20, c = "r")
 plt.scatter(avg_ascast,   hv[5], s = 20, c = "r")
-plt.xlabel("predict")
-plt.ylabel("true")
-plt.savefig("learning_reg_" + str(phase) + str(dimension) + ".png")
+plt.xlabel("predicted")
+plt.ylabel("measured")
+
+save_dir = "output/learning_reg/"
+plt.savefig(save_dir + str(phase) + str(dimension) + ".png")
 # plt.show()
