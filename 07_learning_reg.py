@@ -43,7 +43,7 @@ print('pdvects (min, max) : (', pdvects.min(), ', ', pdvects.max(), ')')
 for pdvect in pdvects:
     for i in diagonal:
         pdvect[i] = 0
-        pdvect[i-1] = 0
+        # pdvect[i-1] = 0
 
 pca = PCA(n_components=10)
 pca.fit(pdvects)

@@ -16,7 +16,7 @@ diagonal = common.diagonal
 
 X = []
 Y = []
-for i in range(64):
+for i in range(bins):
     x    = pd_range[0]+(pd_range[1]-pd_range[0])/bins*i
     y = x
     x_dx = pd_range[0]+(pd_range[1]-pd_range[0])/bins*(i+1)
@@ -34,7 +34,7 @@ coef = lss.coef_
 
 count = 0
 effective_coef_dict = {}
-for i in range(64):
+for i in range(bins):
     for j in range(i+1):
         count += 1
         if lss.coef_[count-1] < 0: #負の係数だけを取得
@@ -61,7 +61,7 @@ print("係数取得終了")
 
 print("描画開始")
 
-spec = hc.PIVectorizeSpec(pd_range, 64, sigma = sigma, weight = "none")
+spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = "none")
 spec.histogram_from_vector(coef).plot(colorbar={"type": "linear-midpoint", "midpoint": 0, "colormap": "Blues"})
 
 plt.savefig("coef_reverse_cmap_" + phase + str(dimension) + ".png")

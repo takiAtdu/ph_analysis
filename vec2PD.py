@@ -8,7 +8,7 @@ sigma = 1
 weight = ("atan", 0.01, 2)
 
 diagonal = []
-for i in range(64):
+for i in range(bins):
     if i == 0:
         diagonal.append(i)
     else:
@@ -23,7 +23,7 @@ print(pdname)
 pd = hc.PDList(pdname).dth_diagram(dimension)
 
 # ベクトル化
-spec = hc.PIVectorizeSpec(pd_range, 64, sigma = sigma, weight = weight)
+spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = weight)
 pdvect = spec.vectorize(pd)
 
 print(pdvect.shape)

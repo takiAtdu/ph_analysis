@@ -14,7 +14,7 @@ phase = "moss"
 dimension = 1
 
 condition = "AsCast"
-images = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/for_reverse/data/"+condition+"/*.png")
+images = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/data/"+condition+"/*.png")
 images.sort()
 
 print("ph解析開始")
@@ -29,7 +29,7 @@ for png_path in images:
     # 大津の方法
     thresholds = common.get_thresholds(pict)
 
-    save_to="/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/for_reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/"+image_name+"_phtrees.pdgm"
+    save_to="/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/"+image_name+"_phtrees.pdgm"
     is_file = os.path.isfile(save_to)
 
 
@@ -51,7 +51,7 @@ print("ph解析終了")
 
 print("逆解析開始")
 
-pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/for_reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/*.pdgm")
+pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/*.pdgm")
 pdnames.sort()
 
 
@@ -64,6 +64,6 @@ for i, image in enumerate(images):
     nodes = nodes_list[i]
     reverse = hc.draw_volumes_on_2d_image(nodes, image, color=(255, 0, 0), alpha=0.5, birth_position=(0, 255, 0))
 
-    save_to = "for_reverse/output/"+condition+"/"+phase+str(dimension)+"/"+image_name+"_reverse_-6.25_6.25.png" #範囲
+    save_to = "reverse/output/"+condition+"/"+phase+str(dimension)+"/"+image_name+"_reverse_-6.25_6.25.png" #範囲
     reverse.save(save_to)
     print(save_to)

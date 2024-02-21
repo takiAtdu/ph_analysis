@@ -30,7 +30,7 @@ for pdname in pdnames:
 pds = [hc.PDList(pdname).dth_diagram(dimension) for pdname in pdnames]
 
 # ベクトル化
-spec = hc.PIVectorizeSpec(pd_range, 64, sigma = sigma, weight = "none")
+spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = "none")
 pdvects = np.vstack([spec.vectorize(pd) for pd in pds])
 
 # 平均化

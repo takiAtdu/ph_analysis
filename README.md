@@ -41,5 +41,5 @@ $ source ./venv/bin/activate
 8. learning_reg.pyで機械学習
 9. coef_cmap.pyで係数確認
 10. pca2PD.pyで主成分が示す領域を確認
-11. for_reverseに逆解析したい画像を追加
+11. reverseに逆解析したい画像を追加
 12. reverse.pyで逆解析

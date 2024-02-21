@@ -1,14 +1,14 @@
 from skimage.filters import threshold_multiotsu
 import imageio
 
-pd_range = (-40, 40)
-bins = 64
+pd_range = (-20, 20)
+bins = 40
 sigma = 1
 weight = ("atan", 0.01, 10)
 
 
 diagonal = []
-for i in range(64):
+for i in range(bins):
     if i == 0:
         diagonal.append(i)
     else:

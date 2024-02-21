@@ -17,7 +17,7 @@ diagonal = common.diagonal
 
 X = []
 Y = []
-for i in range(64):
+for i in range(bins):
     x    = pd_range[0]+(pd_range[1]-pd_range[0])/bins*i
     y = x
     x_dx = pd_range[0]+(pd_range[1]-pd_range[0])/bins*(i+1)
@@ -48,7 +48,7 @@ for pdname in pdnames:
 pds = [hc.PDList(pdname).dth_diagram(dimension) for pdname in pdnames]
 
 # ベクトル化
-spec = hc.PIVectorizeSpec(pd_range, 64, sigma = sigma, weight = weight)
+spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = weight)
 pdvects = np.vstack([spec.vectorize(pd) for pd in pds])
 
 # 対角成分を削る
@@ -65,8 +65,8 @@ print("y算出開始")
 # pdvectの平均値を求める
 pdvect_mean = np.mean(pdvects, axis=0)
 count = 0
-Z = np.zeros((64, 64))
-for i in range(64):
+Z = np.zeros((bins, bins))
+for i in range(bins):
     for j in range(i+1):
         count += 1
         if lss.coef_[count-1] > 0:
@@ -75,7 +75,7 @@ for i in range(64):
 
 count = 0
 y_dict = {}
-for i in range(64):
+for i in rangebins):
     for j in range(i+1):
         count += 1
         if lss.coef_[count-1] != 0:

@@ -27,7 +27,7 @@ for pdname in pdnames:
 pds = [hc.PDList(pdname).dth_diagram(dimension) for pdname in pdnames]
 
 # ベクトル化
-spec = hc.PIVectorizeSpec(pd_range, 64, sigma = sigma, weight = weight)
+spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = weight)
 pdvects = np.vstack([spec.vectorize(pd) for pd in pds])
 
 # 対角成分を削る
@@ -73,29 +73,62 @@ z = z/max(z)
 
 
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-
-ax.set_xlabel("PC1", size = 10, color = "k")
-ax.set_ylabel("PC2", size = 10, color = "k")
-ax.set_zlabel("PC3", size = 10, color = "k")
+pc_dim = input("表示する次元 : ")
+if pc_dim == "3":
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_xlabel("PC1", size = 10, color = "k")
+    ax.set_ylabel("PC2", size = 10, color = "k")
+    ax.set_zlabel("PC3", size = 10, color = "k")
+elif pc_dim == "2":
+    ax = fig.add_subplot(111)
+    xlabel = input("x軸（1, 2, 3）：")
+    ylabel = input("y軸（1, 2, 3）：")
+    ax.set_xlabel("PC"+xlabel, size = 10, color = "k")
+    ax.set_ylabel("PC"+ylabel, size = 10, color = "k")
 
 ax.set_xticks([-1.0, -0.5, 0, 0.5, 1.0])
 ax.set_yticks([-1.0, -0.5, 0, 0.5, 1.0])
-ax.set_zticks([-1.0, -0.5, 0, 0.5, 1.0])
+if pc_dim == "3":
+    ax.set_zticks([-1.0, -0.5, 0, 0.5, 1.0])
 
 
-ax.scatter(x[labels == 1], y[labels == 1], z[labels == 1], s = 20, c = "r")
-ax.scatter(x[labels == 2], y[labels == 2], z[labels == 2], s = 20, c = "b")
-ax.scatter(x[labels == 3], y[labels == 3], z[labels == 3], s = 20, c = "y")
-ax.scatter(x[labels == 4], y[labels == 4], z[labels == 4], s = 20, c = "g")
-ax.scatter(x[labels == 5], y[labels == 5], z[labels == 5], s = 20, c = "c")
-ax.scatter(x[labels == 6], y[labels == 6], z[labels == 6], s = 20, c = "k")
+if pc_dim == "3":
+    ax.scatter(x[labels == 1], y[labels == 1], z[labels == 1], s = 20, c = "r")
+    ax.scatter(x[labels == 2], y[labels == 2], z[labels == 2], s = 20, c = "b")
+    ax.scatter(x[labels == 3], y[labels == 3], z[labels == 3], s = 20, c = "y")
+    ax.scatter(x[labels == 4], y[labels == 4], z[labels == 4], s = 20, c = "g")
+    ax.scatter(x[labels == 5], y[labels == 5], z[labels == 5], s = 20, c = "c")
+    ax.scatter(x[labels == 6], y[labels == 6], z[labels == 6], s = 20, c = "k")
+elif pc_dim == "2":
+    if xlabel == "1" and ylabel == "2":
+        ax.scatter(x[labels == 1], y[labels == 1], s = 20, c = "r")
+        ax.scatter(x[labels == 2], y[labels == 2], s = 20, c = "b")
+        ax.scatter(x[labels == 3], y[labels == 3], s = 20, c = "y")
+        ax.scatter(x[labels == 4], y[labels == 4], s = 20, c = "g")
+        ax.scatter(x[labels == 5], y[labels == 5], s = 20, c = "c")
+        ax.scatter(x[labels == 6], y[labels == 6], s = 20, c = "k")
+    elif xlabel == "1" and ylabel == "3":
+        ax.scatter(x[labels == 1], z[labels == 1], s = 20, c = "r")
+        ax.scatter(x[labels == 2], z[labels == 2], s = 20, c = "b")
+        ax.scatter(x[labels == 3], z[labels == 3], s = 20, c = "y")
+        ax.scatter(x[labels == 4], z[labels == 4], s = 20, c = "g")
+        ax.scatter(x[labels == 5], z[labels == 5], s = 20, c = "c")
+        ax.scatter(x[labels == 6], z[labels == 6], s = 20, c = "k")
+    elif xlabel == "2" and ylabel == "3":
+        ax.scatter(y[labels == 1], z[labels == 1], s = 20, c = "r")
+        ax.scatter(y[labels == 2], z[labels == 2], s = 20, c = "b")
+        ax.scatter(y[labels == 3], z[labels == 3], s = 20, c = "y")
+        ax.scatter(y[labels == 4], z[labels == 4], s = 20, c = "g")
+        ax.scatter(y[labels == 5], z[labels == 5], s = 20, c = "c")
+        ax.scatter(y[labels == 6], z[labels == 6], s = 20, c = "k")
 
-# ax.legend(["1600c24h", "1600c3h", "1700c3h", "1800c24h", "1800c3h", "As Cast"])
+legend_flag = input("凡例を表示するか(表示: 1, 非表示: 0)")
+if legend_flag == "1":
+    ax.legend(["1600c24h", "1600c3h", "1700c3h", "1800c24h", "1800c3h", "As Cast"])
 
 # 出力
-save_flag = input("保存するか表示するか(保存: 1, 表示: 0)")
+save_flag = input("保存するか表示するか(保存: 1, 表示: 0) : ")
 if save_flag == "1":
-    plt.savefig("classification_" + phase + str(dimension) + ".png")
+    plt.savefig("classification_"+pc_dim+"D_" + phase + str(dimension) + ".png")
 else:
     plt.show()

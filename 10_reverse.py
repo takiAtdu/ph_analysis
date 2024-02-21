@@ -17,7 +17,7 @@ dimension = int(input("次元(0, 1) : "))
 
 # ascast, 1600c3h
 condition = input("熱処理条件(AsCast, 1600c3h, ..) : ")
-images = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/for_reverse/data/"+condition+"/*.png")
+images = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/data/"+condition+"/*.png")
 images.sort()
 
 x_min = float(input("逆解析範囲のx_min : "))
@@ -37,8 +37,8 @@ for png_path in images:
     # 大津の方法
     thresholds = common.get_thresholds(pict)
 
-    os.makedirs("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/for_reverse/output/"+condition+"/"+str(phase)+str(dimension), exist_ok=True)
-    save_to="/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/for_reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/"+image_name+"_phtrees.pdgm"
+    os.makedirs("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/output/"+condition+"/"+str(phase)+str(dimension), exist_ok=True)
+    save_to="/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/"+image_name+"_phtrees.pdgm"
     is_file = os.path.isfile(save_to)
 
 
@@ -59,7 +59,7 @@ print("ph解析終了")
 
 
 print("逆解析開始")
-pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/for_reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/*.pdgm")
+pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/*.pdgm")
 pdnames.sort()
 
 
@@ -70,8 +70,18 @@ nodes_list = [phtrees.pair_nodes_in_rectangle(x_min, y_min, x_max, y_max) for ph
 for i, image in enumerate(images):
     image_name = os.path.splitext(os.path.basename(image))[0]
     nodes = nodes_list[i]
+    # # 10点取り出す
+    # print("len(nodes_list[i]) : ", str(len(nodes_list[i])))
+    # if len(nodes_list[i]) > 100:
+    #     nodes = nodes_list[i][2000:2002]
+    #     # print("len(nodes) : ", str(len(nodes)))
+    #     print("nodes : ", nodes)
+    # else:
+    #     nodes = nodes_list[i]
+    #     print("len(nodes) : ", str(len(nodes)))
+    #     print("nodes : ", nodes)
     reverse = hc.draw_volumes_on_2d_image(nodes, image, color=(255, 0, 0), alpha=0.5, birth_position=(0, 255, 0))
 
-    save_to = "for_reverse/output/"+condition+"/"+phase+str(dimension)+"/"+image_name+"_reverse_"+str(x_min)+"_"+str(y_min)+".png"
+    save_to = "reverse/output/"+condition+"/"+phase+str(dimension)+"/"+image_name+"_reverse_"+str(x_min)+"_"+str(y_min)+".png"
     reverse.save(save_to)
     print(save_to)

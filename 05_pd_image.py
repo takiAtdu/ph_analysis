@@ -10,6 +10,7 @@ import common
 phase = input("phase(moss, t2, tic) : ")
 dimension = int(input("dimension(0, 1) : "))
 pd_range = common.pd_range
+bins = common.bins
 
 condition = input("熱処理条件 : ")
 filenames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/output/pdgm_" + phase + "/" + condition + "*.pdgm")
@@ -29,9 +30,9 @@ for pdgm_path in filenames:
     pd_result_path = "output/ph_results/"
     pd = hc.PDList(pdgm_path).dth_diagram(dimension)
 
-    # PDを表示
+    # PDを保存
     os.makedirs(save_dir, exist_ok=True)
-    pd.histogram(x_range=(pd_range[0]-0.5, pd_range[1]+0.5), x_bins=64).plot(colorbar={"type": "log"})
+    pd.histogram(x_range=(pd_range[0]-0.5, pd_range[1]+0.5), x_bins=bins).plot(colorbar={"type": "log"})
     plt.savefig(save_dir + save_filename)
 
     print(str(dimension)+"次のPH図を保存しました。")
