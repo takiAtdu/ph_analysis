@@ -22,7 +22,7 @@ pd_range = common.pd_range
 diagonal = common.diagonal
 
 
-pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/output/pdgm_"+phase+"/*.pdgm")
+pdnames = glob.glob("output/pdgm_"+phase+"/*.pdgm")
 pdnames.sort()
 
 for pdname in pdnames:

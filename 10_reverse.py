@@ -17,7 +17,7 @@ dimension = int(input("次元(0, 1) : "))
 
 # ascast, 1600c3h
 condition = input("熱処理条件(AsCast, 1600c3h, ..) : ")
-images = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/data/"+condition+"/*.png")
+images = glob.glob("reverse/data/"+condition+"/*.png")
 images.sort()
 
 x_min = float(input("逆解析範囲のx_min : "))

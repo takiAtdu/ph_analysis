@@ -16,7 +16,7 @@ for i in range(bins):
         diagonal.append(x)
 
 
-pdname = "/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/for_vec/pdgm_moss/1700c3h_500x_001-pd_moss.pdgm"
+pdname = "for_vec/pdgm_moss/1700c3h_500x_001-pd_moss.pdgm"
 print(pdname)
 
 # PH解析の結果を取得

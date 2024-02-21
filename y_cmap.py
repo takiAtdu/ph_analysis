@@ -37,8 +37,7 @@ print("係数取得終了")
 
 print("PDベクトル取得開始")
 
-# pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/for_vec/pdgm_"+phase+"/*.pdgm")
-pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/output/pdgm_"+phase+"/*.pdgm")
+pdnames = glob.glob("output/pdgm_"+phase+"/*.pdgm")
 pdnames.sort()
 
 for pdname in pdnames:
@@ -75,7 +74,7 @@ for i in range(bins):
 
 count = 0
 y_dict = {}
-for i in rangebins):
+for i in range(bins):
     for j in range(i+1):
         count += 1
         if lss.coef_[count-1] != 0:

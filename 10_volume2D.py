@@ -14,7 +14,7 @@ phase = "moss"
 dimension = 1
 
 condition = "AsCast"
-images = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/data/"+condition+"/*.png")
+images = glob.glob("reverse/data/"+condition+"/*.png")
 images.sort()
 
 print("ph解析開始")
@@ -29,7 +29,7 @@ for png_path in images:
     # 大津の方法
     thresholds = common.get_thresholds(pict)
 
-    save_to="/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/"+image_name+"_phtrees.pdgm"
+    save_to="reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/"+image_name+"_phtrees.pdgm"
     is_file = os.path.isfile(save_to)
 
 
@@ -51,7 +51,7 @@ print("ph解析終了")
 
 print("逆解析開始")
 
-pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/*.pdgm")
+pdnames = glob.glob("reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/*.pdgm")
 pdnames.sort()
 
 
