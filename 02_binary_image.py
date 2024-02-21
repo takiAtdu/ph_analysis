@@ -11,7 +11,7 @@ from PIL import Image
 import common
 
 condition = input("熱処理条件_倍率(data内から選択) : ")
-filenames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/data/" + condition + "/*.png")
+filenames = glob.glob("data/" + condition + "/*.png")
 filenames.sort()
 
 tic_rate_sum = 0
@@ -21,23 +21,18 @@ moss_rate_sum = 0
 for png_path in filenames:
     # 画像の読み込み
     print("画像を読み込み中です。")
-    image_name = os.path.splitext(os.path.basename(png_path))[0]
     print(png_path)
-    print(image_name)
+    image_name = os.path.splitext(os.path.basename(png_path))[0]
 
     # mode="L" とするとグレースケールで読み込まれる
     pict = common.read_image(png_path)
 
-
     # 閾値の設定
     print("閾値を設定中です。")
-    
     thresholds = common.get_thresholds(pict)
-
 
     # PH解析
     print("PH解析中です。")
-
     # 2値化
     pict_tic, pict_t2, pict_moss = common.binarize(pict, thresholds)
     pict_tic *= 255
@@ -55,9 +50,9 @@ for png_path in filenames:
     moss_rate_sum += moss_count/sum*100
 
     # 白黒画像の表示
-    Image.fromarray(np.uint8(pict_tic)).save("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/output/binaryimage_tic/" + image_name + "-binary_tic.png")
-    Image.fromarray(np.uint8(pict_t2)).save("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/output/binaryimage_t2/" + image_name + "-binary_t2.png")
-    Image.fromarray(np.uint8(pict_moss)).save("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/output/binaryimage_moss/" + image_name + "-binary_moss.png")
+    Image.fromarray(np.uint8(pict_tic)).save("output/binaryimage_tic/" + condition + "/" + image_name + "-binary_tic.png")
+    Image.fromarray(np.uint8(pict_t2)).save("output/binaryimage_t2/" + condition + "/" + image_name + "-binary_t2.png")
+    Image.fromarray(np.uint8(pict_moss)).save("output/binaryimage_moss/" + condition + "/" + image_name + "-binary_moss.png")
 
 len = len(filenames)
 print("-----相分率-----")

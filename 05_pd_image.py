@@ -13,16 +13,17 @@ pd_range = common.pd_range
 bins = common.bins
 
 condition = input("熱処理条件 : ")
-filenames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/output/pdgm_" + phase + "/" + condition + "*.pdgm")
+filenames = glob.glob("output/pdgm_" + phase + "/" + condition + "*.pdgm")
 filenames.sort()
 
 
 for pdgm_path in filenames:
     # 画像の読み込み
     print("画像を読み込み中です。")
-    pdgm_name = os.path.splitext(os.path.basename(pdgm_path))[0]
     print(pdgm_path)
-    save_dir = "output/pd" + str(dimension) + "_" + phase + "/"
+    pdgm_name = os.path.splitext(os.path.basename(pdgm_path))[0]
+
+    save_dir = "output/pd" + str(dimension) + "_" + phase + "/" + condition + "/"
     save_filename = pdgm_name +".png"
     print(save_dir + save_filename)
 

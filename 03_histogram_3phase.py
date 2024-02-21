@@ -9,7 +9,7 @@ from skimage.filters import threshold_multiotsu
 import common
 
 condition = input("熱処理条件_倍率(data内から選択) : ")
-filenames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/data/" + condition + "/*.png")
+filenames = glob.glob("data/" + condition + "/*.png")
 filenames.sort()
 
 for png_path in filenames:
@@ -18,13 +18,8 @@ for png_path in filenames:
 
   pict = common.read_image(png_path)
 
-
-
   # 大津の多値化
   thresholds = common.get_thresholds(pict)
-
-
-  # 抽出した極小値を表示
 
   # データの生成
   histo, bins = np.histogram(pict.ravel(), range=(0,256), bins=256)
@@ -44,4 +39,4 @@ for png_path in filenames:
   plt.yscale('log')
   ax.set(ylabel="Frequency")
   # 保存
-  plt.savefig("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/output/histo/" + image_name + "-histo.png")
+  plt.savefig("output/histo/" + condition + "/" + image_name + "-histo.png")

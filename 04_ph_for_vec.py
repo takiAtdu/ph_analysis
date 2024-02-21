@@ -23,11 +23,9 @@ for png_path in filenames:
     # mode="L" とするとグレースケールで読み込まれる
     pict = common.read_image(png_path)
 
-
     # 閾値の設定
     print("閾値を設定中です。")
     thresholds = common.get_thresholds(pict)
-
 
     # PH解析
     print("PH解析中です。")
@@ -45,16 +43,6 @@ for png_path in filenames:
     print("TiC : ", tic_count/sum*100)
     print("T2 : ", t2_count/sum*100)
     print("Moss : ", moss_count/sum*100)
-
-    # 白黒画像の表示
-    # plt.imshow(pict_tic, "gray")
-    # plt.savefig(output_path+"-binary_tic.png")
-
-    # plt.imshow(pict_t2, "gray")
-    # plt.savefig(output_path+"-binary_t2.png")
-
-    # plt.imshow(pict_moss, "gray")
-    # plt.savefig(output_path+"-binary_moss.png")
 
     # PH解析
     pd_result_path = "output/"
