@@ -46,16 +46,20 @@ for png_path in filenames:
 
     # PH解析
     pd_result_path = "output/"
-    os.makedirs(pd_result_path+"pdgm_tic/", exist_ok=True)
-    hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_tic, signed=True), save_to=pd_result_path+"pdgm_tic/"+image_name+"-pd_tic.pdgm")
 
-    os.makedirs(pd_result_path+"pdgm_t2/", exist_ok=True)
-    hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_t2, signed=True), save_to=pd_result_path+"pdgm_t2/"+image_name+"-pd_t2.pdgm")
+    tic_result_path = pd_result_path + "pdgm_tic/" + condition + "/"
+    os.makedirs(tic_result_path, exist_ok=True)
+    hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_tic, signed=True), save_to=tic_result_path+image_name+"-pd_tic.pdgm")
+
+    t2_result_path = pd_result_path + "pdgm_t2/" + condition + "/"
+    os.makedirs(t2_result_path, exist_ok=True)
+    hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_t2, signed=True), save_to=t2_result_path+image_name+"-pd_t2.pdgm")
     
-    os.makedirs(pd_result_path+"pdgm_moss/", exist_ok=True)
-    hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_moss, signed=True), save_to=pd_result_path+"pdgm_moss/"+image_name+"-pd_moss.pdgm")
+    moss_result_path = pd_result_path + "pdgm_moss/" + condition + "/"
+    os.makedirs(moss_result_path, exist_ok=True)
+    hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_moss, signed=True), save_to=moss_result_path+image_name+"-pd_moss.pdgm")
 
 
-    print(pd_result_path+"pdgm_tic/"+image_name+"-pd_tic.pdgm")
-    print(pd_result_path+"pdgm_t2/"+image_name+"-pd_t2.pdgm")
-    print(pd_result_path+"pdgm_moss/"+image_name+"-pd_moss.pdgm")
+    print(tic_result_path+image_name+"-pd_tic.pdgm")
+    print(t2_result_path+image_name+"-pd_t2.pdgm")
+    print(moss_result_path+image_name+"-pd_moss.pdgm")
