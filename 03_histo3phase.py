@@ -39,4 +39,5 @@ for png_path in filenames:
   plt.yscale('log')
   ax.set(ylabel="Frequency")
   # 保存
+  os.makedirs("output/histo/" + condition + "/", exist_ok=True)
   plt.savefig("output/histo/" + condition + "/" + image_name + "-histo.png")
