@@ -33,9 +33,9 @@ for png_path in filenames:
     # 2値化
     pict_tic, pict_t2, pict_moss = common.binarize(pict, thresholds)
 
-    tic_count = np.count_nonzero(pict < thresholds[0])
-    t2_count = np.count_nonzero((thresholds[0] <= pict) & (pict <= thresholds[1]))
-    moss_count = np.count_nonzero(thresholds[1] < pict)
+    tic_count = np.count_nonzero(pict_tic)
+    t2_count = np.count_nonzero(pict_t2)
+    moss_count = np.count_nonzero(pict_moss)
 
     sum = tic_count + t2_count + moss_count
 
@@ -48,10 +48,13 @@ for png_path in filenames:
     pd_result_path = "output/"
     os.makedirs(pd_result_path+"pdgm_tic/", exist_ok=True)
     hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_tic, signed=True), save_to=pd_result_path+"pdgm_tic/"+image_name+"-pd_tic.pdgm")
+
     os.makedirs(pd_result_path+"pdgm_t2/", exist_ok=True)
     hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_t2, signed=True), save_to=pd_result_path+"pdgm_t2/"+image_name+"-pd_t2.pdgm")
+    
     os.makedirs(pd_result_path+"pdgm_moss/", exist_ok=True)
     hc.PDList.from_bitmap_levelset(hc.distance_transform(pict_moss, signed=True), save_to=pd_result_path+"pdgm_moss/"+image_name+"-pd_moss.pdgm")
+
 
     print(pd_result_path+"pdgm_tic/"+image_name+"-pd_tic.pdgm")
     print(pd_result_path+"pdgm_t2/"+image_name+"-pd_t2.pdgm")
