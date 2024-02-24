@@ -35,13 +35,10 @@ for png_path in filenames:
     print("PH解析中です。")
     # 2値化
     pict_tic, pict_t2, pict_moss = common.binarize(pict, thresholds)
-    pict_tic *= 255
-    pict_t2 *= 255
-    pict_moss *= 255
 
-    tic_count = np.count_nonzero(pict < thresholds[0])
-    t2_count = np.count_nonzero((thresholds[0] <= pict) & (pict <= thresholds[1]))
-    moss_count = np.count_nonzero(thresholds[1] < pict)
+    tic_count = np.count_nonzero(pict_tic)
+    t2_count = np.count_nonzero(pict_t2)
+    moss_count = np.count_nonzero(pict_moss)
 
     sum = tic_count + t2_count + moss_count
 
@@ -49,10 +46,18 @@ for png_path in filenames:
     t2_rate_sum += t2_count/sum*100
     moss_rate_sum += moss_count/sum*100
 
+    # 対象相が1になっているので、反転
+    pict_tic = np.logical_not(pict_tic)
+    pict_t2 = np.logical_not(pict_t2)
+    pict_moss = np.logical_not(pict_moss)
+
     # 白黒画像の表示
-    Image.fromarray(np.uint8(pict_tic)).save("output/binaryimage_tic/" + condition + "/" + image_name + "-binary_tic.png")
-    Image.fromarray(np.uint8(pict_t2)).save("output/binaryimage_t2/" + condition + "/" + image_name + "-binary_t2.png")
-    Image.fromarray(np.uint8(pict_moss)).save("output/binaryimage_moss/" + condition + "/" + image_name + "-binary_moss.png")
+    os.makedirs("output/binaryimage_tic/" + condition + "/", exist_ok=True)
+    os.makedirs("output/binaryimage_t2/" + condition + "/", exist_ok=True)
+    os.makedirs("output/binaryimage_moss/" + condition + "/", exist_ok=True)
+    Image.fromarray(pict_tic).save("output/binaryimage_tic/" + condition + "/" + image_name + "-binary_tic.png")
+    Image.fromarray(pict_t2).save("output/binaryimage_t2/" + condition + "/" + image_name + "-binary_t2.png")
+    Image.fromarray(pict_moss).save("output/binaryimage_moss/" + condition + "/" + image_name + "-binary_moss.png")
 
 len = len(filenames)
 print("-----相分率-----")
