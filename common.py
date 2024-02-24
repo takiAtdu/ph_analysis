@@ -1,5 +1,6 @@
 from skimage.filters import threshold_multiotsu
 import imageio
+import numpy as np
 
 pd_range = (-20, 20)
 bins = 40
@@ -27,9 +28,9 @@ def read_image(png_path):
   return pict
 
 def binarize(pict, thresholds):
-  pict_tic = pict > thresholds[0]
-  pict_t2 = (thresholds[0] >= pict) | (pict >= thresholds[1])
-  pict_moss = (thresholds[1]) > pict
+  pict_tic = pict < thresholds[0]
+  pict_t2 = (thresholds[0] <= pict) | (pict <= thresholds[1])
+  pict_moss = (thresholds[1]) < pict
 
   return pict_tic, pict_t2, pict_moss
 
