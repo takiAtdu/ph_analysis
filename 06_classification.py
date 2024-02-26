@@ -18,31 +18,23 @@ bins = common.bins
 pd_range = common.pd_range
 diagonal = common.diagonal
 
-pdnames = glob.glob("output/pdgm_"+phase+"/*.pdgm")
-pdnames.sort()
-
-for pdname in pdnames:
-    print(pdname)
-
-# PH解析の結果を取得
-pds = [hc.PDList(pdname).dth_diagram(dimension) for pdname in pdnames]
-
-# ベクトル化
-spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = weight)
-pdvects = np.vstack([spec.vectorize(pd) for pd in pds])
-
-# 対角成分を削る
-for pdvect in pdvects:
-    for i in diagonal:
-        pdvect[i] = 0
-        pdvect[i-1] = 0
+pdvects_list = glob.glob("output/vectorize/*"+phase+str(dimension)+".npy")
+pdvects_list.sort()
+for i in range(len(pdvects_list)):
+    print(pdvects_list[i])
+    if i == 0:
+        pdvects = np.load(pdvects_list[i])
+    else:
+        temp_vects = np.load(pdvects_list[i])
+        pdvects = np.concatenate([pdvects, temp_vects])
+print("pdvects.shape: ", pdvects.shape)
 
 
 # 正規化
-print('pdvects (min, max) : (', pdvects.min(), ', ', pdvects.max(), ')')
+print('pdvects (min, max): (', pdvects.min(), ', ', pdvects.max(), ')')
 pdvects = pdvects / pdvects.max()
 
-print(pdvects[0].shape)
+print("pdvects[0].shape: ", pdvects[0].shape)
 
 # 主成分解析
 pca = PCA(n_components=10)
@@ -123,18 +115,18 @@ elif pc_dim == "2":
         ax.scatter(y[labels == 5], z[labels == 5], s = 20, c = "c")
         ax.scatter(y[labels == 6], z[labels == 6], s = 20, c = "k")
 
-legend_flag = input("凡例を表示するか(表示: 1, 非表示: 0)")
-if legend_flag == "1":
+legend_flag = input("凡例を表示するか[y/n] : ")
+if legend_flag == "y":
     ax.legend(["1600c24h", "1600c3h", "1700c3h", "1800c24h", "1800c3h", "As Cast"])
 
 # 出力
-save_flag = input("保存するか表示するか(保存: 1, 表示: 0) : ")
-if save_flag == "1":
+save_flag = input("保存するか[y/n] : ")
+if save_flag == "y":
     save_dir = "output/classification/"
     os.makedirs(save_dir, exist_ok=True)
     if pc_dim == "3":
         plt.savefig(save_dir + pc_dim+"D_" + phase + str(dimension) + ".png")
     elif pc_dim == "2":
-        plt.savefig(save_dir + pc_dim+"D_" + phase + str(dimension) + "PC"+xlabel + "_" + "PC"+ylabel + ".png")
+        plt.savefig(save_dir + pc_dim+"D_" + phase + str(dimension) + "_PC"+xlabel + "_" + "PC"+ylabel + ".png")
 else:
     plt.show()

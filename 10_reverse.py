@@ -37,8 +37,8 @@ for png_path in images:
     # 大津の方法
     thresholds = common.get_thresholds(pict)
 
-    os.makedirs("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/output/"+condition+"/"+str(phase)+str(dimension), exist_ok=True)
-    save_to="/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/"+image_name+"_phtrees.pdgm"
+    os.makedirs("reverse/output/"+condition+"/"+str(phase)+str(dimension), exist_ok=True)
+    save_to="reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/"+image_name+"_phtrees.pdgm"
     is_file = os.path.isfile(save_to)
 
 
@@ -59,7 +59,7 @@ print("ph解析終了")
 
 
 print("逆解析開始")
-pdnames = glob.glob("/Users/takigawaatsushi/Documents/研究室/研究/ph_analysis/reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/*.pdgm")
+pdnames = glob.glob("reverse/output/"+condition+"/"+str(phase)+str(dimension)+"/*.pdgm")
 pdnames.sort()
 
 

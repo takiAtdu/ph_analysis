@@ -27,24 +27,17 @@ pd_range = common.pd_range
 diagonal = common.diagonal
 
 
-pdnames = glob.glob("output/pdgm_"+phase+"/*.pdgm")
-pdnames.sort()
+pdvects_list = glob.glob("output/vectorize/*"+phase+str(dimension)+".npy")
+pdvects_list.sort()
+for i in range(len(pdvects_list)):
+    print(pdvects_list[i])
+    if i == 0:
+        pdvects = np.load(pdvects_list[i])
+    else:
+        temp_vects = np.load(pdvects_list[i])
+        pdvects = np.concatenate([pdvects, temp_vects])
+print("pdvects.shape: ", pdvects.shape)
 
-# PH解析の結果を取得
-pds = [hc.PDList(pdname).dth_diagram(dimension) for pdname in pdnames]
-
-# ベクトル化
-spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = weight)
-pdvects = np.vstack([spec.vectorize(pd) for pd in pds])
-
-print('pdvects (min, max) : (', pdvects.min(), ', ', pdvects.max(), ')')
-# pdvects = pdvects / pdvects.max()
-
-# 対角成分を削る
-for pdvect in pdvects:
-    for i in diagonal:
-        pdvect[i] = 0
-        # pdvect[i-1] = 0
 
 pca = PCA(n_components=10)
 pca.fit(pdvects)
@@ -65,13 +58,13 @@ pickle.dump(lss, open(save_dir+filename, 'wb'))
 
 y_pred = lss.predict(X_test)
 
-print('train score : ', lss.score(X_train, y_train))
-print('test score : ', lss.score(X_test, y_test))
+print('train score: ', lss.score(X_train, y_train))
+print('test score: ', lss.score(X_test, y_test))
 
-print('元の特徴量の数 : ', X.shape[1])
-print('Lasso の特徴量 : ', np.sum(lss.coef_ != 0))
+print('元の特徴量の数: ', X.shape[1])
+print('Lasso の特徴量: ', np.sum(lss.coef_ != 0))
 
-print('最小2乗誤差 : ', mean_squared_error(y_test,y_pred))
+print('最小2乗誤差: ', mean_squared_error(y_test,y_pred))
 
 
 result_1600c24h = []
@@ -95,22 +88,22 @@ for i in range(len(y_test)):
         result_ascast.append(y_pred[i])
 
 avg_1600c24h = sum(result_1600c24h)/len(result_1600c24h)
-print('1600c24hの平均値 : ', avg_1600c24h)
+print('1600c24hの平均値: ', avg_1600c24h)
 
 avg_1600c3h = sum(result_1600c3h)/len(result_1600c3h)
-print('1600c3hの平均値 : ', avg_1600c3h)
+print('1600c3hの平均値: ', avg_1600c3h)
 
 avg_1700c3h = sum(result_1700c3h)/len(result_1700c3h)
-print('1700c3hの平均値 : ', avg_1700c3h)
+print('1700c3hの平均値: ', avg_1700c3h)
 
 avg_1800c24h = sum(result_1800c24h)/len(result_1800c24h)
-print('1800c24hの平均値 : ', avg_1800c24h)
+print('1800c24hの平均値: ', avg_1800c24h)
 
 avg_1800c3h = sum(result_1800c3h)/len(result_1800c3h)
-print('1800c3hの平均値 : ', avg_1800c3h)
+print('1800c3hの平均値: ', avg_1800c3h)
 
 avg_ascast = sum(result_ascast)/len(result_ascast)
-print('ascastの平均値 : ', avg_ascast)
+print('ascastの平均値: ', avg_ascast)
 
 
 plt.scatter(y_pred, y_test, s = 20, c = "b")

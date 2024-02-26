@@ -1,9 +1,12 @@
 from skimage.filters import threshold_multiotsu
 import imageio
 import numpy as np
+import cv2
 
-pd_range = (-20, 20)
-bins = 40
+pd_range = (-25, 25)
+pd0_range = (-25, 15)
+pd1_range = (-10, 25)
+bins = 50
 sigma = 1
 weight = ("atan", 0.01, 10)
 
@@ -24,12 +27,12 @@ def get_thresholds(pict):
     return thresholds
 
 def read_image(png_path):
-  pict = imageio.v3.imread(png_path, mode="L")
+  pict = cv2.imread(png_path, cv2.IMREAD_GRAYSCALE)
   return pict
 
 def binarize(pict, thresholds):
   pict_tic = pict < thresholds[0]
-  pict_t2 = (thresholds[0] <= pict) | (pict <= thresholds[1])
+  pict_t2 = (thresholds[0] <= pict) & (pict <= thresholds[1])
   pict_moss = (thresholds[1]) < pict
 
   return pict_tic, pict_t2, pict_moss

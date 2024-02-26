@@ -44,6 +44,7 @@ for png_path in filenames:
     print("T2 : ", t2_count/sum*100)
     print("Moss : ", moss_count/sum*100)
 
+
     # PH解析
     pd_result_path = "output/"
 

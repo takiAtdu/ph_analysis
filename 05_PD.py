@@ -7,13 +7,13 @@ import glob
 
 import common
 
+condition = input("熱処理条件_倍率 : ")
 phase = input("phase(moss, t2, tic) : ")
 dimension = int(input("dimension(0, 1) : "))
 pd_range = common.pd_range
 bins = common.bins
 
-condition = input("熱処理条件 : ")
-filenames = glob.glob("output/pdgm_" + phase + "/" + condition + "*.pdgm")
+filenames = glob.glob("output/pdgm_" + phase + "/" + condition + "/*.pdgm")
 filenames.sort()
 
 
@@ -28,7 +28,6 @@ for pdgm_path in filenames:
     print(save_dir + save_filename)
 
     # PDを取得
-    pd_result_path = "output/ph_results/"
     pd = hc.PDList(pdgm_path).dth_diagram(dimension)
 
     # PDを保存

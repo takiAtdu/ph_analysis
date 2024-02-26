@@ -37,24 +37,32 @@ print("係数取得終了")
 
 print("PDベクトル取得開始")
 
-pdnames = glob.glob("output/pdgm_"+phase+"/*.pdgm")
-pdnames.sort()
+# pdnames = glob.glob("output/pdgm_"+phase+"/*.pdgm")
+# pdnames.sort()
 
-for pdname in pdnames:
-    print(pdname)
+# for pdname in pdnames:
+#     print(pdname)
 
-# PH解析の結果を取得
-pds = [hc.PDList(pdname).dth_diagram(dimension) for pdname in pdnames]
+# # PH解析の結果を取得
+# pds = [hc.PDList(pdname).dth_diagram(dimension) for pdname in pdnames]
 
-# ベクトル化
-spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = weight)
-pdvects = np.vstack([spec.vectorize(pd) for pd in pds])
+# # ベクトル化
+# spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = weight)
+# pdvects = np.vstack([spec.vectorize(pd) for pd in pds])
 
-# 対角成分を削る
-for pdvect in pdvects:
-    for i in diagonal:
-        pdvect[i] = 0
-        pdvect[i-1] = 0
+# # 対角成分を削る
+# for pdvect in pdvects:
+#     for i in diagonal:
+#         pdvect[i] = 0
+#         pdvect[i-1] = 0
+
+pdvects_list = glob.glob("output/vectorize/*.npy")
+for i in range(len(pdvects_list)):
+    if i == 0:
+        pdvects = np.load(pdvects_list[i])
+    else:
+        temp_vects = np.load(pdvects_list[i])
+        pdvects = np.concatenate([pdvects, temp_vects])
 
 print("PDベクトル取得終了")
 

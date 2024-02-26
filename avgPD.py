@@ -10,17 +10,18 @@ from matplotlib.colors import LogNorm
 import common
 
 
-condition = input("熱処理条件 : ")
-
+condition = input("熱処理条件_倍率 : ")
 phase = input("phase(moss, t2, tic) : ")
 dimension = int(input("dimension(0, 1) : "))
 sigma = common.sigma
 weight = common.weight
 bins = common.bins
-pd_range = common.pd_range
+pd_range_min = int(input("pd_range_min : "))
+pd_range_max = int(input("pd_range_max : "))
+pd_range = (pd_range_min, pd_range_max)
 diagonal = common.diagonal
 
-pdnames = glob.glob("output/pdgm_"+phase+"/"+condition+"*.pdgm")
+pdnames = glob.glob("output/pdgm_"+phase+"/"+condition+"/*.pdgm")
 pdnames.sort()
 
 for pdname in pdnames:
@@ -45,3 +46,4 @@ spec.histogram_from_vector(avg_vect).plot(colorbar={"type": "log", "min": 1})
 save_dir = "output/avgPD/"
 os.makedirs(save_dir, exist_ok=True)
 plt.savefig(save_dir + condition + "_" + phase + str(dimension) + ".png")
+print(save_dir + condition + "_" + phase + str(dimension) + ".png")

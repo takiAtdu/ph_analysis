@@ -24,7 +24,6 @@ for png_path in filenames:
     print(png_path)
     image_name = os.path.splitext(os.path.basename(png_path))[0]
 
-    # mode="L" とするとグレースケールで読み込まれる
     pict = common.read_image(png_path)
 
     # 閾値の設定
