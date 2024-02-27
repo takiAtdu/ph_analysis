@@ -56,13 +56,8 @@ print("PDベクトル取得開始")
 #         pdvect[i] = 0
 #         pdvect[i-1] = 0
 
-pdvects_list = glob.glob("output/vectorize/*.npy")
-for i in range(len(pdvects_list)):
-    if i == 0:
-        pdvects = np.load(pdvects_list[i])
-    else:
-        temp_vects = np.load(pdvects_list[i])
-        pdvects = np.concatenate([pdvects, temp_vects])
+
+pdvects = common.get_pdvects(phase, dimension)
 
 print("PDベクトル取得終了")
 

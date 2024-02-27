@@ -18,15 +18,7 @@ bins = common.bins
 pd_range = common.pd_range
 diagonal = common.diagonal
 
-pdvects_list = glob.glob("output/vectorize/*"+phase+str(dimension)+".npy")
-pdvects_list.sort()
-for i in range(len(pdvects_list)):
-    print(pdvects_list[i])
-    if i == 0:
-        pdvects = np.load(pdvects_list[i])
-    else:
-        temp_vects = np.load(pdvects_list[i])
-        pdvects = np.concatenate([pdvects, temp_vects])
+pdvects = common.get_pdvects(phase, dimension)
 print("pdvects.shape: ", pdvects.shape)
 
 

@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import homcloud.interface as hc
@@ -21,31 +22,8 @@ bins = common.bins
 pd_range = common.pd_range
 diagonal = common.diagonal
 
-
-# pdnames = glob.glob("output/pdgm_"+phase+"/*.pdgm")
-# pdnames.sort()
-
-# for pdname in pdnames:
-#     print(pdname)
-
-# print("上記のpdgmファイルを読み込んでいます。")
-
-# # PH解析の結果を取得
-# pds = [hc.PDList(pdname).dth_diagram(dimension) for pdname in pdnames]
-
-
-# print("ベクトル化しています。")
-# # ベクトル化
-# spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = weight)
-# pdvects = np.vstack([spec.vectorize(pd) for pd in pds])
-
 spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = weight)
-pdvects_list = glob.glob("output/vectorize/*.txt")
-for i in range(len(pdvects_list)):
-    if i == 0:
-        pdvects = pdvects_list[i]
-    else:
-        pdvects = np.concatenate([pdvects, pdvects_list[i]])
+pdvects = common.get_pdvects(phase, dimension)
 
 # 正規化
 print('pdvects (min, max) : (', pdvects.min(), ', ', pdvects.max(), ')')
@@ -70,4 +48,6 @@ elif pc == 3:
 
 
 # 出力
-plt.savefig("pca2PD_" + phase + str(dimension) +"_pc"+str(pc)+ ".png")
+save_dir = "output/pca2PD/"
+os.makedirs(save_dir, exist_ok=True)
+plt.savefig(save_dir + "pca2PD_" + phase + str(dimension) +"_pc"+str(pc)+ ".png")

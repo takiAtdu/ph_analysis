@@ -27,25 +27,11 @@ pd_range = common.pd_range
 diagonal = common.diagonal
 
 
-pdvects_list = glob.glob("output/vectorize/*"+phase+str(dimension)+".npy")
-pdvects_list.sort()
-for i in range(len(pdvects_list)):
-    print(pdvects_list[i])
-    if i == 0:
-        pdvects = np.load(pdvects_list[i])
-    else:
-        temp_vects = np.load(pdvects_list[i])
-        pdvects = np.concatenate([pdvects, temp_vects])
+pdvects = common.get_pdvects(phase, dimension)
 print("pdvects.shape: ", pdvects.shape)
 
 
-pca = PCA(n_components=10)
-pca.fit(pdvects)
-
-reduced = pca.transform(pdvects)
-
 X = pdvects
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 
 lss = Lasso(alpha=0.1)

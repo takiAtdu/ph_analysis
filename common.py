@@ -2,6 +2,7 @@ from skimage.filters import threshold_multiotsu
 import imageio
 import numpy as np
 import cv2
+import glob
 
 pd_range = (-25, 25)
 pd0_range = (-25, 15)
@@ -40,3 +41,16 @@ def binarize(pict, thresholds):
 def get_hv():
   hv = [952.4, 925.2, 955.9, 850.2, 948.1, 983.4]
   return hv
+
+def get_pdvects(phase, dimension):
+  pdvects_list = glob.glob("output/vectorize/*"+phase+str(dimension)+".npy")
+  pdvects_list.sort()
+  for i in range(len(pdvects_list)):
+    print(pdvects_list[i])
+    if i == 0:
+      pdvects = np.load(pdvects_list[i])
+    else:
+      temp_vects = np.load(pdvects_list[i])
+      pdvects = np.concatenate([pdvects, temp_vects])
+
+  return pdvects
