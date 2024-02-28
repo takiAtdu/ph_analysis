@@ -32,11 +32,6 @@ pds = [hc.PDList(pdname).dth_diagram(dimension) for pdname in pdnames]
 spec = hc.PIVectorizeSpec(pd_range, bins, sigma = sigma, weight = weight)
 pdvects = np.vstack([spec.vectorize(pd) for pd in pds])
 
-# # 対角成分を削る
-# for pdvect in pdvects:
-#     for i in diagonal:
-#         pdvect[i] = 0
-#         pdvect[i-1] = 0
-
 os.makedirs("output/vectorize/", exist_ok=True)
 np.save("output/vectorize/"+condition+"_"+phase+str(dimension)+".npy", pdvects)
+print("output/vectorize/"+condition+"_"+phase+str(dimension)+".npy")
