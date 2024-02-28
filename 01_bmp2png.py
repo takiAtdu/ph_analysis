@@ -6,9 +6,10 @@ import common
 
 
 basedir = input("パスを指定(ex. /Users/takigawaatsushi/Documents/研究室/研究/data/EPMA/240205/1800c24h) : ")
+condition = input("熱処理条件_倍率(data内から選択) : ")
 filepaths = glob.glob(basedir + "/*.bmp")
 filepaths.sort()
-savedir = basedir + "/png/"
+savedir = "data/" + condition + "/"
 os.makedirs(savedir, exist_ok=True)
 
 for bmppath in filepaths:
