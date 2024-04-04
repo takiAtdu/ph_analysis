@@ -32,14 +32,13 @@ $ source ./venv/bin/activate
 
 # 実行手順
 1. bmp_to_png.pyでpng画像を生成
-2. dataにpng画像を保存
 3. binary_image.pyで2値化画像を確認
 4. histogram_3phase.pyでヒスグラムを確認
-5. ph_for_vec.pyでph解析を実行
-6. pd_image.pyでPDを表示
-7. for_vecにpdgmファイルを入れ、classification.pyでベクトル化、分類
-8. learning_reg.pyで機械学習
+5. phanalysis.pyでph解析を実行
+6. PD.pyでPDを表示
+1. vectorize.pyでベクトル化
+7. classification.pyで分類
+8. lasso.pyで機械学習
 9. coef_cmap.pyで係数確認
-10. pca2PD.pyで主成分が示す領域を確認
-11. reverseに逆解析したい画像を追加
+11. reverse/に逆解析したい画像を追加
 12. reverse.pyで逆解析

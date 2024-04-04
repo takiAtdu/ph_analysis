@@ -7,7 +7,7 @@ import glob
 pd_range = (-25, 25)
 pd0_range = (-25, 15)
 pd1_range = (-10, 25)
-bins = 50
+bins = 16
 sigma = 1
 weight = ("atan", 0.01, 10)
 
